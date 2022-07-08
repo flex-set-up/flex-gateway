@@ -1,0 +1,73 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus # expose apis for health check and prometheus
+  endpoint:
+    health:
+      show-details: when_authorized
+jwt:
+  secret-key: ${JWT_SECRET_KEY}
+
+spring:
+  application:
+    name: flex-gateway
+  sleuth:
+    sampler:
+      probability: 1
+  zipkin:
+    base-url: ${ZIPKIN_URL}
+    sender:
+      type: rabbit
+  rabbitmq:
+    host: ${RABBIT_MQ_HOST}
+    port: ${RABBIT_MQ_PORT}
+    username: ${RABBIT_MQ_USERNAME}
+    password: ${RABBIT_MQ_PASSWORD}
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: ${USER_SERVICE_HOST}:${USER_SERVICE_PORT}
+          predicates:
+            - Path=/users/**
+
+        - id: authority-service
+          uri: ${AUTHORITY_SERVICE_HOST}:${AUTHORITY_SERVICE_ENDPOINT}
+          predicates:
+            - Path=/authorities/**
+
+        - id: feed-service
+          uri: ${FEED_SERVICE_HOST}:${FEED_SERVICE_PORT}
+          predicates:
+            - Path=/feeds/**
+
+        - id: time-tracking-service
+          uri: ${TIME_TRACKING_HOST}:${TIME_TRACKING_PORT}
+          predicates:
+            - Path=/time-tracking/**
+
+        - id: payroll-service
+          uri: ${PAYROLL_HOST}:${PAYROLL_PORT}
+          predicates:
+            - Path=/payroll/**
+
+        - id: year-end-settlement-service
+          uri: ${YEAR_END_SETTLEMENT_HOST}:${YEAR_END_SETTLEMENT_PORT}
+          predicates:
+            - Path=/year-end-settlement/**
+
+        - id: workflow-service
+          uri: ${WORKFLOW_HOST}:${WORKFLOW_PORT}
+          predicates:
+            - Path=/workflow/**
+
+        - id: digital-contract-service
+          uri: ${DIGITAL_CONTRACT_HOST}:${DIGITAL_CONTRACT_PORT}
+          predicates:
+            - Path=/digital-contract/**
+
+        - id: insight-service
+          uri: ${INSIGHT_HOST}:${INSIGHT_PORT}
+          predicates:
+            - Path=/insight/**
