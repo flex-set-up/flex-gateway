@@ -9,5 +9,4 @@ class FlexGatewayApplicationTests {
     @Test
     fun contextLoads() {
     }
-
 }
